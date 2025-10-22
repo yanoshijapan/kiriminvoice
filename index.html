@@ -388,17 +388,23 @@ Kuroneko saat barang sampai (chakubarai/COD)`;
                 linkCol: dom.linkColSelect.value,
             };
 
-            // Validasi input
-            if (!params.sheetName || !params.nameCol || !params.waCol || !params.linkCol) {
-                showMessage('Harap lengkapi semua pilihan kolom.', true);
+            // --- PERUBAHAN DIMULAI DI SINI ---
+            
+            // Validasi input: Kita HANYA perlu memvalidasi sheetName.
+            // Kolom lain sekarang opsional.
+            if (!params.sheetName) {
+                showMessage('Harap pilih Sheet terlebih dahulu.', true);
                 return;
             }
+
+            // --- PERUBAHAN SELESAI DI SINI ---
 
             showLoader(true);
             showMessage('');
             dom.dataContainer.innerHTML = ''; // Kosongkan hasil sebelumnya
 
             try {
+                // Permintaan API tetap sama, backend akan menangani nilai kosong
                 const response = await apiCall('getData', params);
                 const data = response.data;
 
