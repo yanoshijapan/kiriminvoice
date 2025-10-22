@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Dashboard</title>
+    <title>Dashboard Kirim Invoice</title>
     <style>
+        /* --- Reset & Global --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --bg-color: #eef2f5;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,49 +26,60 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* --- Layout & Struktur --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
             padding: 20px;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
         }
 
-        .header {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
+        header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 2rem;
         }
 
-        .header h1 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        main {
+            display: grid;
+            gap: 25px;
         }
 
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .controls {
-            background: white;
+        /* --- Panel Kontrol --- */
+        .control-panel {
+            background-color: var(--card-bg);
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
 
-        .control-group {
+        .control-panel h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 20px;
+            align-items: end;
         }
 
         .form-group {
@@ -64,538 +89,470 @@
 
         .form-group label {
             font-weight: 600;
-            color: #333;
             margin-bottom: 8px;
-            font-size: 0.95em;
+            font-size: 0.9rem;
         }
 
-        .form-group select {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn-load {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-load:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .btn-load:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        .stat-card h3 {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-card .number {
-            color: #667eea;
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-
-        .search-box {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        .search-box input {
+        select, button {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1.1em;
-            transition: all 0.3s;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .search-box input:focus {
+        select:focus, button:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
         }
 
-        .table-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        thead th {
-            padding: 20px;
-            text-align: left;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9em;
-        }
-
-        tbody tr {
-            border-bottom: 1px solid #f0f0f0;
-            transition: all 0.3s;
-        }
-
-        tbody tr:hover {
-            background: #f8f9ff;
-        }
-
-        tbody td {
-            padding: 20px;
-            color: #333;
-        }
-
-        .btn-send {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
+        button {
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-        }
-
-        .btn-send:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .link-file {
-            color: #667eea;
-            text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s;
         }
 
-        .link-file:hover {
-            color: #764ba2;
-            text-decoration: underline;
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
         }
 
-        .loading {
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        /* --- Loader & Status --- */
+        .loader-container {
+            display: none; /* Sembunyi by default */
             text-align: center;
-            padding: 40px;
-            color: #667eea;
-            font-size: 1.2em;
+            padding: 40px 0;
         }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+        .loader {
+            border: 6px solid var(--light-color);
+            border-top: 6px solid var(--primary-color);
             border-radius: 50%;
             width: 50px;
             height: 50px;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 0 auto 15px;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .no-data {
+        .status-message {
+            margin-top: 20px;
             text-align: center;
-            padding: 60px;
-            color: #999;
-            font-size: 1.2em;
-        }
-
-        .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            font-size: 1.1rem;
             font-weight: 500;
         }
-
-        .alert-error {
-            background: #fee;
-            color: #c33;
-            border-left: 4px solid #c33;
+        .status-message.error {
+            color: #dc3545;
         }
 
-        .alert-success {
-            background: #efe;
-            color: #3c3;
-            border-left: 4px solid #3c3;
+        /* --- Kontainer Data (Card View) --- */
+        #data-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
+        .data-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
 
-            .control-group {
-                grid-template-columns: 1fr;
-            }
+        .data-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
 
-            table {
-                font-size: 0.9em;
-            }
+        .card-info {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+        }
+        .card-info strong {
+            color: var(--secondary-color);
+        }
+        .card-info p {
+            margin-bottom: 8px;
+        }
+        .card-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .card-info a:hover {
+            text-decoration: underline;
+        }
 
-            thead th, tbody td {
-                padding: 12px;
-            }
+        .data-card .btn-success {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="header">
-            <h1>📊 Invoice Dashboard</h1>
-            <p>Kelola dan kirim invoice dengan mudah dan cepat</p>
-        </div>
+        <header>
+            <h1>Dashboard Kirim Invoice</h1>
+        </header>
 
-        <div class="controls">
-            <div class="control-group">
-                <div class="form-group">
-                    <label for="sheetSelect">Pilih Sheet</label>
-                    <select id="sheetSelect">
-                        <option value="">Loading sheets...</option>
-                    </select>
+        <main>
+            <section class="control-panel">
+                <h2>1. Pilih Sumber Data</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="sheet-select">Pilih Sheet</label>
+                        <select id="sheet-select" disabled>
+                            <option>Memuat sheet...</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="namaColumn">Kolom Nama</label>
-                    <select id="namaColumn">
-                        <option value="">Pilih kolom...</option>
-                    </select>
+            </section>
+
+            <section class="control-panel">
+                <h2>2. Tentukan Kolom</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name-col-select">Kolom Nama</label>
+                        <select id="name-col-select" disabled>
+                            <option>Pilih sheet dulu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="wa-col-select">Kolom WhatsApp</label>
+                        <select id="wa-col-select" disabled>
+                            <option>Pilih sheet dulu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="link-col-select">Kolom Link File</label>
+                        <select id="link-col-select" disabled>
+                            <option>Pilih sheet dulu</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="waColumn">Kolom WhatsApp</label>
-                    <select id="waColumn">
-                        <option value="">Pilih kolom...</option>
-                    </select>
+            </section>
+            
+            <section class="control-panel">
+                <h2>3. Tampilkan Data</h2>
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                    <button id="load-data-btn" class="btn-primary" disabled>Tampilkan Data</button>
                 </div>
-                <div class="form-group">
-                    <label for="linkColumn">Kolom Link File</label>
-                    <select id="linkColumn">
-                        <option value="">Pilih kolom...</option>
-                    </select>
-                </div>
-            </div>
-            <button class="btn-load" onclick="loadData()">Muat Data</button>
-        </div>
+            </section>
 
-        <div id="alertContainer"></div>
-
-        <div class="stats" id="stats" style="display: none;">
-            <div class="stat-card">
-                <h3>Total Data</h3>
-                <div class="number" id="totalData">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Terkirim</h3>
-                <div class="number" id="sentData">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Belum Terkirim</h3>
-                <div class="number" id="pendingData">0</div>
-            </div>
-        </div>
-
-        <div class="search-box" id="searchBox" style="display: none;">
-            <input type="text" id="searchInput" placeholder="🔍 Cari nama atau nomor WhatsApp...">
-        </div>
-
-        <div class="table-container">
-            <div id="loadingDiv" class="loading" style="display: none;">
-                <div class="spinner"></div>
+            <div class="loader-container" id="loader">
+                <div class="loader"></div>
                 <p>Memuat data...</p>
             </div>
-            <div id="noDataDiv" class="no-data">
-                Silakan pilih sheet dan kolom, lalu klik "Muat Data"
-            </div>
-            <table id="dataTable" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>WhatsApp</th>
-                        <th>Link File</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
+            <div class="status-message" id="status-message"></div>
+
+            <section id="data-container"></section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 - Dibuat untuk Dashboard Kustom</p>
+        </footer>
     </div>
 
     <script>
-        // GANTI URL INI DENGAN URL WEB APP DARI GOOGLE APPS SCRIPT ANDA
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNXdYfuTTT_qthMUI0mJfFSPTTeyg8y9bsbrO03bak4xzQ2UBL8sCJrkqhfuDMwEpE/exec';
-        
-        let allData = [];
-        let sentStatus = {};
+        // --- KONFIGURASI ---
+        // !!! PENTING: Ganti dengan URL Web App Anda dari Google Apps Script
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxNXdYfuTTT_qthMUI0mJfFSPTTeyg8y9bsbrO03bak4xzQ2UBL8sCJrkqhfuDMwEpE/exec";
 
-        // Load sheets on page load
-        window.addEventListener('load', function() {
-            loadSheets();
-        });
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            filterTable(e.target.value);
-        });
-
-        // Sheet selection change
-        document.getElementById('sheetSelect').addEventListener('change', function() {
-            loadColumns();
-        });
-
-        function showAlert(message, type = 'success') {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.textContent = message;
-            document.getElementById('alertContainer').appendChild(alertDiv);
-            setTimeout(() => alertDiv.remove(), 5000);
-        }
-
-        async function loadSheets() {
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=getSheets`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    const select = document.getElementById('sheetSelect');
-                    select.innerHTML = '<option value="">Pilih sheet...</option>';
-                    data.sheets.forEach(sheet => {
-                        const option = document.createElement('option');
-                        option.value = sheet;
-                        option.textContent = sheet;
-                        select.appendChild(option);
-                    });
-                } else {
-                    showAlert('Gagal memuat sheets: ' + data.message, 'error');
-                }
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
-            }
-        }
-
-        async function loadColumns() {
-            const sheetName = document.getElementById('sheetSelect').value;
-            if (!sheetName) return;
-
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=getColumns&sheet=${encodeURIComponent(sheetName)}`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    const selects = ['namaColumn', 'waColumn', 'linkColumn'];
-                    selects.forEach(selectId => {
-                        const select = document.getElementById(selectId);
-                        select.innerHTML = '<option value="">Pilih kolom...</option>';
-                        data.columns.forEach((col, index) => {
-                            const option = document.createElement('option');
-                            option.value = index;
-                            option.textContent = col;
-                            select.appendChild(option);
-                        });
-                    });
-                } else {
-                    showAlert('Gagal memuat kolom: ' + data.message, 'error');
-                }
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
-            }
-        }
-
-        async function loadData() {
-            const sheetName = document.getElementById('sheetSelect').value;
-            const namaCol = document.getElementById('namaColumn').value;
-            const waCol = document.getElementById('waColumn').value;
-            const linkCol = document.getElementById('linkColumn').value;
-
-            if (!sheetName || namaCol === '' || waCol === '' || linkCol === '') {
-                showAlert('Harap pilih sheet dan semua kolom', 'error');
-                return;
-            }
-
-            document.getElementById('loadingDiv').style.display = 'block';
-            document.getElementById('noDataDiv').style.display = 'none';
-            document.getElementById('dataTable').style.display = 'none';
-
-            try {
-                const url = `${SCRIPT_URL}?action=getData&sheet=${encodeURIComponent(sheetName)}&namaCol=${namaCol}&waCol=${waCol}&linkCol=${linkCol}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.success) {
-                    allData = data.data;
-                    displayData(allData);
-                    updateStats();
-                    document.getElementById('stats').style.display = 'grid';
-                    document.getElementById('searchBox').style.display = 'block';
-                    showAlert('Data berhasil dimuat: ' + allData.length + ' baris', 'success');
-                } else {
-                    showAlert('Gagal memuat data: ' + data.message, 'error');
-                    document.getElementById('loadingDiv').style.display = 'none';
-                    document.getElementById('noDataDiv').style.display = 'block';
-                }
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
-                document.getElementById('loadingDiv').style.display = 'none';
-                document.getElementById('noDataDiv').style.display = 'block';
-            }
-        }
-
-        function displayData(data) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                document.getElementById('loadingDiv').style.display = 'none';
-                document.getElementById('noDataDiv').style.display = 'block';
-                document.getElementById('dataTable').style.display = 'none';
-                return;
-            }
-
-            data.forEach((row, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${row.nama || '-'}</td>
-                    <td>${row.whatsapp || '-'}</td>
-                    <td><a href="${row.link || '#'}" target="_blank" class="link-file">Lihat File</a></td>
-                    <td><span id="status-${index}">${sentStatus[index] ? '✅ Terkirim' : '⏳ Belum'}</span></td>
-                    <td><button class="btn-send" onclick="sendInvoice(${index})" id="btn-${index}">
-                        📤 Kirim Invoice
-                    </button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('loadingDiv').style.display = 'none';
-            document.getElementById('dataTable').style.display = 'table';
-        }
-
-        function filterTable(searchTerm) {
-            const filtered = allData.filter(row => 
-                (row.nama && row.nama.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (row.whatsapp && row.whatsapp.includes(searchTerm))
-            );
-            displayData(filtered);
-        }
-
-        function updateStats() {
-            const total = allData.length;
-            const sent = Object.values(sentStatus).filter(v => v).length;
-            const pending = total - sent;
-
-            document.getElementById('totalData').textContent = total;
-            document.getElementById('sentData').textContent = sent;
-            document.getElementById('pendingData').textContent = pending;
-        }
-
-        function sendInvoice(index) {
-            const row = allData[index];
-            const btn = document.getElementById(`btn-${index}`);
-            
-            if (!row.whatsapp || !row.nama || !row.link) {
-                showAlert('Data tidak lengkap untuk baris ini', 'error');
-                return;
-            }
-
-            // Format nomor WhatsApp (hapus karakter non-digit)
-            let phone = row.whatsapp.toString().replace(/\D/g, '');
-            
-            // Tambahkan 62 jika diawali 0
-            if (phone.startsWith('0')) {
-                phone = '62' + phone.substring(1);
-            } else if (!phone.startsWith('62')) {
-                phone = '62' + phone;
-            }
-
-            const message = `Halo kak ${row.nama}, ini invoice dan alamat pengiriman. Mohon dicek kembali ya, apakah sudah sesuai dengan dokumen yang diunggah?
-
-Berikut invoicenya: ${row.link}
+        // --- Template Pesan WhatsApp ---
+        const WA_TEMPLATE = `Halo kak [nama], ini invoice dan alamat
+pengiriman. Mohon dicek kembali ya, apakah sudah sesuai dengan dokumen yang
+diunggah? Berikut invoicenya
+: [link file]
 
 Rencana pembayaran pakai Yen atau Rupiah, kak?
 
-Catatan: harga belum termasuk biaya pengiriman domestik dari bandara ke apato. Biaya ini akan dibayarkan langsung ke kurir Yamato Kuroneko saat barang sampai (chakubarai/COD)`;
+Catatan : 
+harga belum termasuk biaya pengiriman domestik
+dari bandara ke apato. Biaya ini akan dibayarkan langsung ke kurir Yamato
+Kuroneko saat barang sampai (chakubarai/COD)`;
 
-            const encodedMessage = encodeURIComponent(message);
-            const waUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
 
-            // Buka WhatsApp
-            window.open(waUrl, '_blank');
+        // --- Selektor DOM ---
+        const dom = {
+            sheetSelect: document.getElementById('sheet-select'),
+            nameColSelect: document.getElementById('name-col-select'),
+            waColSelect: document.getElementById('wa-col-select'),
+            linkColSelect: document.getElementById('link-col-select'),
+            loadDataBtn: document.getElementById('load-data-btn'),
+            loader: document.getElementById('loader'),
+            dataContainer: document.getElementById('data-container'),
+            statusMessage: document.getElementById('status-message'),
+        };
 
-            // Update status
-            sentStatus[index] = true;
-            btn.disabled = true;
-            btn.textContent = '✅ Terkirim';
-            document.getElementById(`status-${index}`).textContent = '✅ Terkirim';
-            updateStats();
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', initApp);
+        dom.sheetSelect.addEventListener('change', handleSheetSelect);
+        dom.loadDataBtn.addEventListener('click', handleLoadData);
+
+        /**
+         * Inisialisasi aplikasi saat halaman dimuat
+         */
+        async function initApp() {
+            showLoader(true);
+            showMessage('');
             
-            showAlert(`Invoice berhasil dikirim ke ${row.nama}`, 'success');
+            try {
+                const response = await apiCall('getSheets');
+                populateSelect(dom.sheetSelect, response.data, 'Pilih Sheet');
+                dom.sheetSelect.disabled = false;
+            } catch (error) {
+                showMessage(`Gagal memuat sheet: ${error.message}`, true);
+            } finally {
+                showLoader(false);
+            }
         }
+
+        /**
+         * Menangani saat sheet dipilih
+         */
+        async function handleSheetSelect() {
+            const sheetName = dom.sheetSelect.value;
+            if (!sheetName) {
+                resetColumnSelects();
+                return;
+            }
+
+            showLoader(true);
+            showMessage('');
+            dom.loadDataBtn.disabled = true;
+
+            try {
+                const response = await apiCall('getHeaders', { sheetName });
+                const headers = response.data;
+                
+                // Isi ketiga dropdown kolom
+                populateSelect(dom.nameColSelect, headers, 'Pilih Kolom Nama');
+                populateSelect(dom.waColSelect, headers, 'Pilih Kolom WA');
+                populateSelect(dom.linkColSelect, headers, 'Pilih Kolom Link');
+
+                // Aktifkan dropdown dan tombol
+                [dom.nameColSelect, dom.waColSelect, dom.linkColSelect, dom.loadDataBtn].forEach(el => el.disabled = false);
+
+            } catch (error) {
+                showMessage(`Gagal memuat header kolom: ${error.message}`, true);
+                resetColumnSelects();
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        /**
+         * Menangani saat tombol "Tampilkan Data" diklik
+         */
+        async function handleLoadData() {
+            const params = {
+                sheetName: dom.sheetSelect.value,
+                nameCol: dom.nameColSelect.value,
+                waCol: dom.waColSelect.value,
+                linkCol: dom.linkColSelect.value,
+            };
+
+            // Validasi input
+            if (!params.sheetName || !params.nameCol || !params.waCol || !params.linkCol) {
+                showMessage('Harap lengkapi semua pilihan kolom.', true);
+                return;
+            }
+
+            showLoader(true);
+            showMessage('');
+            dom.dataContainer.innerHTML = ''; // Kosongkan hasil sebelumnya
+
+            try {
+                const response = await apiCall('getData', params);
+                const data = response.data;
+
+                if (data.length === 0) {
+                    showMessage('Tidak ada data yang ditemukan dengan kriteria tersebut.', false);
+                } else {
+                    renderDataCards(data);
+                }
+            } catch (error) {
+                showMessage(`Gagal mengambil data: ${error.message}`, true);
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        /**
+         * Merender data sebagai kartu-kartu
+         */
+        function renderDataCards(data) {
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'data-card';
+                card.innerHTML = `
+                    <div class="card-content">
+                        <h3>${escapeHTML(item.name)}</h3>
+                        <div class="card-info">
+                            <p><strong>WhatsApp:</strong> ${escapeHTML(item.wa)}</p>
+                            <p><strong>Link File:</strong> <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer">Lihat File</a></p>
+                        </div>
+                    </div>
+                    <button class="btn-success send-wa-btn">Kirim Invoice</button>
+                `;
+                
+                // Tambahkan data ke tombol untuk digunakan saat diklik
+                const sendButton = card.querySelector('.send-wa-btn');
+                sendButton.dataset.name = item.name;
+                sendButton.dataset.wa = item.wa;
+                sendButton.dataset.link = item.link;
+
+                // Tambahkan event listener ke tombol
+                sendButton.addEventListener('click', handleSendWhatsApp);
+                
+                dom.dataContainer.appendChild(card);
+            });
+        }
+
+        /**
+         * Menangani klik tombol "Kirim Invoice"
+         */
+        function handleSendWhatsApp(event) {
+            const { name, wa, link } = event.target.dataset;
+            
+            // Format pesan
+            const message = WA_TEMPLATE
+                .replace('[nama]', name)
+                .replace('[link file]', link);
+            
+            // Bersihkan nomor WA
+            const cleanWANumber = wa.toString().replace(/[^0-9]/g, '');
+            let formattedWA = cleanWANumber;
+
+            // Format nomor ke standar internasional (62)
+            if (formattedWA.startsWith('0')) {
+                formattedWA = '62' + formattedWA.substring(1);
+            } else if (!formattedWA.startsWith('62')) {
+                formattedWA = '62' + formattedWA;
+            }
+
+            // Buat URL dan buka di tab baru
+            const waURL = `https://wa.me/${formattedWA}?text=${encodeURIComponent(message)}`;
+            window.open(waURL, '_blank');
+        }
+
+
+        // --- Fungsi Utilitas ---
+
+        /**
+         * Fungsi pembungkus (wrapper) untuk API call ke Google Apps Script
+         */
+        async function apiCall(action, params = {}) {
+            const url = new URL(GAS_URL);
+            url.searchParams.append('action', action);
+            for (const key in params) {
+                url.searchParams.append(key, params[key]);
+            }
+
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Jaringan error: ${response.statusText}`);
+            }
+
+            const json = await response.json();
+            if (json.status === 'error') {
+                throw new Error(json.message);
+            }
+            
+            return json;
+        }
+
+        /**
+         * Mengisi elemen <select> dengan opsi
+         */
+        function populateSelect(selectElement, options, defaultOptionText) {
+            selectElement.innerHTML = `<option value="">-- ${defaultOptionText} --</option>`;
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        /**
+         * Mereset dropdown kolom
+         */
+        function resetColumnSelects() {
+            const defaultText = 'Pilih sheet dulu';
+            [dom.nameColSelect, dom.waColSelect, dom.linkColSelect].forEach(sel => {
+                sel.innerHTML = `<option>${defaultText}</option>`;
+                sel.disabled = true;
+            });
+        }
+
+        /**
+         * Menampilkan atau menyembunyikan loader
+         */
+        function showLoader(show) {
+            dom.loader.style.display = show ? 'block' : 'none';
+        }
+
+        /**
+         * Menampilkan pesan status atau error
+         */
+        function showMessage(message, isError = false) {
+            dom.statusMessage.textContent = message;
+            dom.statusMessage.className = isError ? 'status-message error' : 'status-message';
+        }
+
+        /**
+         * Membersihkan HTML untuk mencegah XSS
+         */
+        function escapeHTML(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
+        }
+
     </script>
 </body>
 </html>
