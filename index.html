@@ -131,6 +131,12 @@
         .btn-success:hover {
             background-color: #218838;
         }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
 
         /* --- Loader & Status --- */
         .loader-container {
@@ -176,12 +182,23 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s; /* Tambahkan background-color */
         }
         .data-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
+        
+        /* CSS BARU UNTUK KARTU YANG SUDAH TERKIRIM */
+        .data-card.sent {
+            background-color: #e9f7ef; /* Hijau muda */
+            border: 1px solid var(--success-color);
+        }
+        .data-card.sent:hover {
+            transform: none; /* Hilangkan efek hover jika sudah terkirim */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Kembalikan shadow standar */
+        }
+        /* AKHIR CSS BARU */
 
         .data-card h3 {
             margin-top: 0;
@@ -296,8 +313,8 @@
 
         // --- Template Pesan WhatsApp ---
         const WA_TEMPLATE = `Halo kak [nama], ini invoice dan alamat pengiriman. Mohon dicek kembali ya, apakah sudah sesuai dengan dokumen yang diunggah? Berikut invoicenya:
-        [link file]
-        Rencana pembayaran pakai Yen atau Rupiah, kak?`;
+[link file]
+Rencana pembayaran pakai Yen atau Rupiah, kak?`;
 
         // --- Selektor DOM ---
         const dom = {
@@ -379,23 +396,17 @@
                 linkCol: dom.linkColSelect.value,
             };
 
-            // --- PERUBAHAN DIMULAI DI SINI ---
-            
-            // Validasi input: Kita HANYA perlu memvalidasi sheetName.
-            // Kolom lain sekarang opsional.
+            // Validasi input
             if (!params.sheetName) {
                 showMessage('Harap pilih Sheet terlebih dahulu.', true);
                 return;
             }
-
-            // --- PERUBAHAN SELESAI DI SINI ---
 
             showLoader(true);
             showMessage('');
             dom.dataContainer.innerHTML = ''; // Kosongkan hasil sebelumnya
 
             try {
-                // Permintaan API tetap sama, backend akan menangani nilai kosong
                 const response = await apiCall('getData', params);
                 const data = response.data;
 
@@ -446,7 +457,11 @@
          * Menangani klik tombol "Kirim Invoice"
          */
         function handleSendWhatsApp(event) {
-            const { name, wa, link } = event.target.dataset;
+            const sendButton = event.target;
+            // Dapatkan elemen card induk
+            const cardElement = sendButton.closest('.data-card'); 
+
+            const { name, wa, link } = sendButton.dataset;
             
             // Format pesan
             const message = WA_TEMPLATE
@@ -467,6 +482,19 @@
             // Buat URL dan buka di tab baru
             const waURL = `https://wa.me/${formattedWA}?text=${encodeURIComponent(message)}`;
             window.open(waURL, '_blank');
+
+            // --- BAGIAN BARU: UBAH TAMPILAN CARD ---
+            if (cardElement) {
+                // 1. Tambahkan class 'sent' untuk mengubah warna latar belakang
+                cardElement.classList.add('sent'); 
+                
+                // 2. Opsional: Nonaktifkan tombol dan ubah teks/warna tombol agar tidak dikirim ganda
+                sendButton.textContent = 'Invoice Terkirim!';
+                sendButton.disabled = true;
+                sendButton.classList.remove('btn-success');
+                sendButton.classList.add('btn-secondary'); // Menggunakan warna abu-abu
+            }
+            // --- AKHIR BAGIAN BARU ---
         }
 
 
