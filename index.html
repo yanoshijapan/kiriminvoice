@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Dashboard Kirim Invoice Jastip</title>
+    <title>Dashboard Kirim Invoice Pro</title>
     <style>
-        /* --- Modern CSS Variables --- */
         :root {
             --primary: #2563eb;
             --primary-dark: #1e40af;
@@ -40,17 +39,14 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-
-        /* --- Container --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
             padding: 16px;
         }
 
-        /* --- Header --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         .header {
             background: var(--white);
             border-radius: var(--radius);
@@ -65,10 +61,6 @@
             font-size: clamp(1.5rem, 5vw, 2rem);
             font-weight: 800;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .header p {
@@ -76,7 +68,6 @@
             font-size: 0.9rem;
         }
 
-        /* --- Control Panel --- */
         .panel {
             background: var(--white);
             border-radius: var(--radius);
@@ -113,7 +104,6 @@
             font-weight: 700;
         }
 
-        /* --- Form Styles --- */
         .form-grid {
             display: grid;
             gap: 16px;
@@ -134,11 +124,6 @@
             gap: 6px;
         }
 
-        .form-label-required {
-            color: var(--danger);
-            font-size: 1.2rem;
-        }
-
         select, input {
             width: 100%;
             padding: 14px 16px;
@@ -148,8 +133,6 @@
             background: var(--white);
             color: var(--gray-800);
             transition: var(--transition);
-            -webkit-appearance: none;
-            appearance: none;
         }
 
         select {
@@ -166,11 +149,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        input::placeholder {
-            color: var(--gray-400);
-        }
-
-        /* --- Button Styles --- */
         .btn {
             width: 100%;
             padding: 14px 24px;
@@ -184,9 +162,6 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn:disabled {
@@ -205,10 +180,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .btn-primary:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
         .btn-success {
             background: var(--success);
             color: white;
@@ -225,7 +196,6 @@
             color: white;
         }
 
-        /* --- Loader --- */
         .loader-container {
             display: none;
             text-align: center;
@@ -255,14 +225,12 @@
             font-weight: 600;
         }
 
-        /* --- Status Messages --- */
         .status-message {
             padding: 16px 20px;
             border-radius: var(--radius-sm);
             margin: 16px 0;
             font-weight: 600;
             display: none;
-            animation: slideDown 0.3s ease;
         }
 
         .status-message.show {
@@ -281,18 +249,135 @@
             border-left: 4px solid var(--primary);
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .stats-bar {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        /* --- Data Cards --- */
+        .stats-bar.show {
+            display: grid;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .stat-card::before {
+            content: '👆 Klik untuk filter';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+            top: -12px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .stat-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .stat-card.active .stat-value {
+            color: var(--primary) !important;
+        }
+
+        .stat-card.active .stat-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-top: 4px;
+            transition: var(--transition);
+        }
+
+        .filter-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 14px 18px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .filter-count {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            min-width: 30px;
+            text-align: center;
+            margin-left: auto;
+        }
+
+        .filter-btn.active .filter-count {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
         .data-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
@@ -300,7 +385,6 @@
             margin-top: 20px;
         }
 
-        /* Mobile: 2 kolom di layar kecil */
         @media (max-width: 767px) {
             .data-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -308,7 +392,6 @@
             }
         }
 
-        /* Mobile sangat kecil: 1 kolom */
         @media (max-width: 400px) {
             .data-grid {
                 grid-template-columns: 1fr;
@@ -326,7 +409,28 @@
             flex-direction: column;
             gap: 16px;
             border: 2px solid transparent;
+            opacity: 0;
+            animation: fadeInUp 0.4s ease forwards;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-card:nth-child(1) { animation-delay: 0.05s; }
+        .data-card:nth-child(2) { animation-delay: 0.1s; }
+        .data-card:nth-child(3) { animation-delay: 0.15s; }
+        .data-card:nth-child(4) { animation-delay: 0.2s; }
+        .data-card:nth-child(5) { animation-delay: 0.25s; }
+        .data-card:nth-child(6) { animation-delay: 0.3s; }
+        .data-card:nth-child(n+7) { animation-delay: 0.35s; }
 
         .data-card:hover {
             transform: translateY(-4px);
@@ -423,7 +527,6 @@
             text-decoration: underline;
         }
 
-        /* Manual WA Input */
         .manual-wa-input {
             width: 100%;
             padding: 12px 16px;
@@ -445,39 +548,11 @@
             background: #fffbeb;
         }
 
-        /* --- Stats Bar --- */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--gray-600);
-            margin-top: 4px;
-        }
-
-        /* --- Empty State --- */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: var(--gray-600);
+            grid-column: 1 / -1;
         }
 
         .empty-icon {
@@ -497,16 +572,7 @@
             font-size: 0.95rem;
         }
 
-        /* --- Responsive --- */
         @media (min-width: 768px) {
-            .container {
-                padding: 24px;
-            }
-
-            .form-grid.cols-2 {
-                grid-template-columns: 1fr 1fr;
-            }
-
             .form-grid.cols-3 {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -556,47 +622,41 @@
                 padding: 10px 12px;
                 font-size: 0.85rem;
             }
+
+            .stat-card::before {
+                content: '👆';
+                font-size: 0.6rem;
+                padding: 3px 6px;
+            }
         }
 
-        /* --- Scroll Behavior --- */
         html {
             scroll-behavior: smooth;
-        }
-
-        /* --- Accessibility --- */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header class="header">
-            <h1>📨 Dashboard Invoice Jastip</h1>
+            <h1>📨 Dashboard Invoice Pro</h1>
             <p>Sistem pengiriman invoice otomatis via WhatsApp</p>
         </header>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar" id="stats-bar" style="display: none;">
-            <div class="stat-card">
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat-card" data-filter="all">
                 <div class="stat-value" id="stat-total">0</div>
                 <div class="stat-label">Total Data</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" data-filter="sent">
                 <div class="stat-value" id="stat-sent" style="color: var(--success);">0</div>
                 <div class="stat-label">Terkirim</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" data-filter="pending">
                 <div class="stat-value" id="stat-pending" style="color: var(--warning);">0</div>
                 <div class="stat-label">Pending</div>
             </div>
         </div>
 
-        <!-- Panel 1: Select Sheet -->
         <section class="panel">
             <div class="panel-title">
                 <span class="panel-title-icon">1</span>
@@ -604,10 +664,7 @@
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="sheet-select">
-                        <span>📊 Sheet</span>
-                        <span class="form-label-required">*</span>
-                    </label>
+                    <label class="form-label" for="sheet-select">📊 Sheet</label>
                     <select id="sheet-select" disabled>
                         <option>⏳ Memuat sheet...</option>
                     </select>
@@ -615,7 +672,6 @@
             </div>
         </section>
 
-        <!-- Panel 2: Select Columns -->
         <section class="panel">
             <div class="panel-title">
                 <span class="panel-title-icon">2</span>
@@ -643,7 +699,6 @@
             </div>
         </section>
 
-        <!-- Panel 3: Load Data -->
         <section class="panel">
             <div class="panel-title">
                 <span class="panel-title-icon">3</span>
@@ -655,36 +710,50 @@
             </button>
         </section>
 
-        <!-- Loader -->
+        <section class="panel" id="filter-panel" style="display: none;">
+            <div class="panel-title">
+                <span class="panel-title-icon">📂</span>
+                <h2>Filter Data</h2>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <span>📋</span>
+                    <span>Semua Data</span>
+                    <span class="filter-count" id="count-all">0</span>
+                </button>
+                <button class="filter-btn" data-filter="sent">
+                    <span>✅</span>
+                    <span>Sudah Terkirim</span>
+                    <span class="filter-count" id="count-sent">0</span>
+                </button>
+                <button class="filter-btn" data-filter="pending">
+                    <span>⏳</span>
+                    <span>Belum Terkirim</span>
+                    <span class="filter-count" id="count-pending">0</span>
+                </button>
+            </div>
+        </section>
+
         <div class="loader-container" id="loader">
             <div class="spinner"></div>
             <p class="loader-text">Memuat data...</p>
         </div>
 
-        <!-- Status Message -->
         <div class="status-message" id="status-message"></div>
 
-        <!-- Data Container -->
         <div class="data-grid" id="data-container"></div>
     </div>
 
     <script>
-        // ============================================
+        'use strict';
+
         // KONFIGURASI
-        // ============================================
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxNXdYfuTTT_qthMUI0mJfFSPTTeyg8y9bsbrO03bak4xzQ2UBL8sCJrkqhfuDMwEpE/exec";
+        var GAS_URL = "https://script.google.com/macros/s/AKfycbxNXdYfuTTT_qthMUI0mJfFSPTTeyg8y9bsbrO03bak4xzQ2UBL8sCJrkqhfuDMwEpE/exec";
 
-        const WA_TEMPLATE = `Halo kak [nama], ini invoice dan alamat pengiriman. Mohon dicek kembali ya, apakah sudah sesuai dengan dokumen yang diunggah? Berikut invoicenya:
-[link file]
-Rencana pembayaran pakai Yen atau Rupiah, kak?`;
+        var WA_TEMPLATE = "Halo kak [nama], ini invoice dan alamat pengiriman. Mohon dicek kembali ya, apakah sudah sesuai dengan dokumen yang diunggah? Berikut invoicenya:\n[link file]\nRencana pembayaran pakai Yen atau Rupiah, kak?";
 
-        // Local Storage Key untuk menyimpan status pengiriman
-        const STORAGE_KEY = 'invoice_sent_status';
-
-        // ============================================
         // DOM ELEMENTS
-        // ============================================
-        const dom = {
+        var dom = {
             sheetSelect: document.getElementById('sheet-select'),
             nameColSelect: document.getElementById('name-col-select'),
             waColSelect: document.getElementById('wa-col-select'),
@@ -697,41 +766,93 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             statTotal: document.getElementById('stat-total'),
             statSent: document.getElementById('stat-sent'),
             statPending: document.getElementById('stat-pending'),
+            filterPanel: document.getElementById('filter-panel'),
+            countAll: document.getElementById('count-all'),
+            countSent: document.getElementById('count-sent'),
+            countPending: document.getElementById('count-pending')
         };
 
-        // ============================================
         // STATE MANAGEMENT
-        // ============================================
-        let currentData = [];
-        let sentInvoices = loadSentStatus();
+        var currentData = [];
+        var sentInvoices = {};
+        var currentFilter = 'all';
 
-        // ============================================
         // INITIALIZATION
-        // ============================================
         document.addEventListener('DOMContentLoaded', initApp);
         dom.sheetSelect.addEventListener('change', handleSheetSelect);
         dom.loadDataBtn.addEventListener('click', handleLoadData);
 
-        async function initApp() {
+        // Filter buttons
+        var filterButtons = document.querySelectorAll('.filter-btn');
+        for (var i = 0; i < filterButtons.length; i++) {
+            filterButtons[i].addEventListener('click', function() {
+                var allButtons = document.querySelectorAll('.filter-btn');
+                for (var j = 0; j < allButtons.length; j++) {
+                    allButtons[j].classList.remove('active');
+                }
+                this.classList.add('active');
+                currentFilter = this.getAttribute('data-filter');
+                applyFilter();
+                updateActiveStates();
+                showToast('📂 Filter: ' + getFilterName(currentFilter));
+            });
+        }
+
+        // Stats cards
+        var statCards = document.querySelectorAll('.stat-card');
+        for (var i = 0; i < statCards.length; i++) {
+            statCards[i].addEventListener('click', function() {
+                var filter = this.getAttribute('data-filter');
+                currentFilter = filter;
+                
+                var allCards = document.querySelectorAll('.stat-card');
+                for (var j = 0; j < allCards.length; j++) {
+                    allCards[j].classList.remove('active');
+                }
+                this.classList.add('active');
+                
+                var allButtons = document.querySelectorAll('.filter-btn');
+                for (var k = 0; k < allButtons.length; k++) {
+                    allButtons[k].classList.remove('active');
+                    if (allButtons[k].getAttribute('data-filter') === filter) {
+                        allButtons[k].classList.add('active');
+                    }
+                }
+                
+                applyFilter();
+                showToast('📂 Filter: ' + getFilterName(currentFilter));
+            });
+        }
+
+        function initApp() {
             showLoader(true);
             hideMessage();
             
-            try {
-                const response = await apiCall('getSheets');
-                populateSelect(dom.sheetSelect, response.data, 'Pilih Sheet');
-                dom.sheetSelect.disabled = false;
-            } catch (error) {
-                showMessage(`❌ Gagal memuat sheet: ${error.message}`, true);
-            } finally {
-                showLoader(false);
-            }
+            apiCall('getSheets', {})
+                .then(function(response) {
+                    populateSelect(dom.sheetSelect, response.data, 'Pilih Sheet');
+                    dom.sheetSelect.disabled = false;
+                    return loadSentStatusFromServer();
+                })
+                .catch(function(error) {
+                    showMessage('❌ Gagal memuat sheet: ' + error.message, true);
+                })
+                .finally(function() {
+                    showLoader(false);
+                });
         }
 
-        // ============================================
-        // EVENT HANDLERS
-        // ============================================
-        async function handleSheetSelect() {
-            const sheetName = dom.sheetSelect.value;
+        function getFilterName(filter) {
+            var names = {
+                'all': 'Semua Data',
+                'sent': 'Sudah Terkirim',
+                'pending': 'Belum Terkirim'
+            };
+            return names[filter] || filter;
+        }
+
+        function handleSheetSelect() {
+            var sheetName = dom.sheetSelect.value;
             if (!sheetName) {
                 resetColumnSelects();
                 return;
@@ -741,30 +862,34 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             hideMessage();
             dom.loadDataBtn.disabled = true;
 
-            try {
-                const response = await apiCall('getHeaders', { sheetName });
-                const headers = response.data;
-                
-                populateSelect(dom.nameColSelect, headers, 'Pilih Kolom Nama');
-                populateSelect(dom.waColSelect, headers, 'Pilih Kolom WA');
-                populateSelect(dom.linkColSelect, headers, 'Pilih Kolom Link');
+            apiCall('getHeaders', { sheetName: sheetName })
+                .then(function(response) {
+                    var headers = response.data;
+                    
+                    populateSelect(dom.nameColSelect, headers, 'Pilih Kolom Nama');
+                    populateSelect(dom.waColSelect, headers, 'Pilih Kolom WA');
+                    populateSelect(dom.linkColSelect, headers, 'Pilih Kolom Link');
 
-                [dom.nameColSelect, dom.waColSelect, dom.linkColSelect, dom.loadDataBtn].forEach(el => el.disabled = false);
-
-            } catch (error) {
-                showMessage(`❌ Gagal memuat header: ${error.message}`, true);
-                resetColumnSelects();
-            } finally {
-                showLoader(false);
-            }
+                    dom.nameColSelect.disabled = false;
+                    dom.waColSelect.disabled = false;
+                    dom.linkColSelect.disabled = false;
+                    dom.loadDataBtn.disabled = false;
+                })
+                .catch(function(error) {
+                    showMessage('❌ Gagal memuat header: ' + error.message, true);
+                    resetColumnSelects();
+                })
+                .finally(function() {
+                    showLoader(false);
+                });
         }
 
-        async function handleLoadData() {
-            const params = {
+        function handleLoadData() {
+            var params = {
                 sheetName: dom.sheetSelect.value,
                 nameCol: dom.nameColSelect.value,
                 waCol: dom.waColSelect.value,
-                linkCol: dom.linkColSelect.value,
+                linkCol: dom.linkColSelect.value
             };
 
             if (!params.sheetName) {
@@ -776,261 +901,421 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             hideMessage();
             dom.dataContainer.innerHTML = '';
             dom.statsBar.style.display = 'none';
+            dom.filterPanel.style.display = 'none';
 
-            try {
-                const response = await apiCall('getData', params);
-                currentData = response.data;
+            Promise.all([
+                apiCall('getData', params),
+                apiCall('getSentStatus', {})
+            ])
+            .then(function(results) {
+                var dataResponse = results[0];
+                var statusResponse = results[1];
+
+                currentData = dataResponse.data;
+                sentInvoices = statusResponse.data || {};
 
                 if (currentData.length === 0) {
                     showEmptyState();
                 } else {
-                    renderDataCards(currentData);
+                    currentFilter = 'all';
+                    applyFilter();
                     updateStats();
-                    dom.statsBar.style.display = 'grid';
-                    showMessage(`✅ Berhasil memuat ${currentData.length} data invoice!`, false);
+                    updateFilterCounts();
+                    updateActiveStates();
+                    dom.statsBar.classList.add('show');
+                    dom.filterPanel.style.display = 'block';
+                    showMessage('✅ Berhasil memuat ' + currentData.length + ' data invoice!', false);
                 }
-            } catch (error) {
-                showMessage(`❌ Gagal mengambil data: ${error.message}`, true);
-            } finally {
+            })
+            .catch(function(error) {
+                showMessage('❌ Gagal mengambil data: ' + error.message, true);
+            })
+            .finally(function() {
                 showLoader(false);
-            }
-        }
-
-        // ============================================
-        // RENDER FUNCTIONS
-        // ============================================
-        function renderDataCards(data) {
-            dom.dataContainer.innerHTML = '';
-
-            data.forEach((item, index) => {
-                const uniqueId = generateUniqueId(item);
-                const isSent = sentInvoices.has(uniqueId);
-
-                const card = document.createElement('div');
-                card.className = `data-card ${isSent ? 'sent' : ''}`;
-                card.dataset.id = uniqueId;
-
-                card.innerHTML = `
-                    <div class="card-header">
-                        <h3 class="card-title">${escapeHTML(item.name)}</h3>
-                        ${isSent ? '<span class="card-badge badge-sent">✓ Terkirim</span>' : ''}
-                    </div>
-
-                    <div class="card-info">
-                        <div class="info-row">
-                            <span class="info-icon">📱</span>
-                            <span class="info-label">WhatsApp:</span>
-                            <span class="info-value">${escapeHTML(item.wa)}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-icon">🔗</span>
-                            <span class="info-label">Link File:</span>
-                            <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer" class="info-link">
-                                Lihat Invoice →
-                            </a>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-icon">✏️</span>
-                            <span class="info-label">WA Manual:</span>
-                            <input 
-                                type="tel" 
-                                class="manual-wa-input" 
-                                placeholder="Kosongkan jika pakai nomor dari data"
-                                data-index="${index}"
-                            >
-                        </div>
-                    </div>
-
-                    <button 
-                        class="btn ${isSent ? 'btn-warning' : 'btn-success'} send-btn"
-                        data-index="${index}"
-                        data-id="${uniqueId}"
-                    >
-                        <span>${isSent ? '🔄' : '📨'}</span>
-                        <span>${isSent ? 'Kirim Ulang Invoice' : 'Kirim Invoice'}</span>
-                    </button>
-                `;
-
-                // Event listener untuk input manual WA
-                const manualInput = card.querySelector('.manual-wa-input');
-                manualInput.addEventListener('input', (e) => {
-                    if (e.target.value.trim()) {
-                        e.target.classList.add('has-value');
-                    } else {
-                        e.target.classList.remove('has-value');
-                    }
-                });
-
-                // Event listener untuk tombol kirim
-                const sendBtn = card.querySelector('.send-btn');
-                sendBtn.addEventListener('click', () => handleSendInvoice(index, uniqueId));
-
-                dom.dataContainer.appendChild(card);
             });
         }
 
-        function showEmptyState() {
-            dom.dataContainer.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-icon">📭</div>
-                    <div class="empty-title">Tidak Ada Data</div>
-                    <div class="empty-text">Tidak ada data yang sesuai dengan kriteria yang dipilih</div>
-                </div>
-            `;
-        }
-
-        // ============================================
-        // SEND INVOICE HANDLER
-        // ============================================
-        function handleSendInvoice(index, uniqueId) {
-            const item = currentData[index];
-            const card = document.querySelector(`[data-id="${uniqueId}"]`);
-            const manualInput = card.querySelector('.manual-wa-input');
-            const manualWA = manualInput.value.trim();
-
-            // Tentukan nomor WA yang akan digunakan
-            let waNumber = manualWA || item.wa;
-            
-            // Format pesan
-            const message = WA_TEMPLATE
-                .replace('[nama]', item.name)
-                .replace('[link file]', item.link);
-            
-            // Bersihkan dan format nomor WA
-            const cleanWA = waNumber.toString().replace(/[^0-9]/g, '');
-            let formattedWA = cleanWA;
-
-            if (formattedWA.startsWith('0')) {
-                formattedWA = '62' + formattedWA.substring(1);
-            } else if (!formattedWA.startsWith('62')) {
-                formattedWA = '62' + formattedWA;
+        function updateActiveStates() {
+            var allCards = document.querySelectorAll('.stat-card');
+            for (var i = 0; i < allCards.length; i++) {
+                allCards[i].classList.remove('active');
+                if (allCards[i].getAttribute('data-filter') === currentFilter) {
+                    allCards[i].classList.add('active');
+                }
             }
 
-            // Buat URL WhatsApp
-            const waURL = `https://wa.me/${formattedWA}?text=${encodeURIComponent(message)}`;
+            var allButtons = document.querySelectorAll('.filter-btn');
+            for (var j = 0; j < allButtons.length; j++) {
+                allButtons[j].classList.remove('active');
+                if (allButtons[j].getAttribute('data-filter') === currentFilter) {
+                    allButtons[j].classList.add('active');
+                }
+            }
+        }
+
+        function applyFilter() {
+            var filteredData = currentData.slice();
+
+            if (currentFilter === 'sent') {
+                filteredData = filteredData.filter(function(item) {
+                    var uniqueId = generateUniqueId(item);
+                    return sentInvoices[uniqueId] !== undefined;
+                });
+            } else if (currentFilter === 'pending') {
+                filteredData = filteredData.filter(function(item) {
+                    var uniqueId = generateUniqueId(item);
+                    return sentInvoices[uniqueId] === undefined;
+                });
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (filteredData.length === 0) {
+                showEmptyState(currentFilter);
+            } else {
+                renderDataCards(filteredData);
+            }
+        }
+
+        function updateFilterCounts() {
+            var total = currentData.length;
+            var sent = currentData.filter(function(item) {
+                return sentInvoices[generateUniqueId(item)] !== undefined;
+            }).length;
+            var pending = total - sent;
+
+            dom.countAll.textContent = total;
+            dom.countSent.textContent = sent;
+            dom.countPending.textContent = pending;
+        }
+
+        function renderDataCards(data) {
+            dom.dataContainer.innerHTML = '';
+
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var uniqueId = generateUniqueId(item);
+                var isSent = sentInvoices[uniqueId] !== undefined;
+
+                var card = document.createElement('div');
+                card.className = 'data-card' + (isSent ? ' sent' : '');
+                card.setAttribute('data-id', uniqueId);
+
+                card.innerHTML = 
+                    '<div class="card-header">' +
+                        '<h3 class="card-title">' + escapeHTML(item.name) + '</h3>' +
+                        (isSent ? '<span class="card-badge badge-sent">✓ Terkirim</span>' : '') +
+                    '</div>' +
+                    '<div class="card-info">' +
+                        '<div class="info-row">' +
+                            '<span class="info-icon">📱</span>' +
+                            '<span class="info-label">WhatsApp:</span>' +
+                            '<span class="info-value">' + escapeHTML(item.wa) + '</span>' +
+                        '</div>' +
+                        '<div class="info-row">' +
+                            '<span class="info-icon">🔗</span>' +
+                            '<span class="info-label">Link File:</span>' +
+                            '<a href="' + escapeHTML(item.link) + '" target="_blank" rel="noopener noreferrer" class="info-link">' +
+                                'Lihat Invoice →' +
+                            '</a>' +
+                        '</div>' +
+                        '<div class="info-row">' +
+                            '<span class="info-icon">✏️</span>' +
+                            '<span class="info-label">WA Manual:</span>' +
+                            '<input type="tel" class="manual-wa-input" placeholder="Kosongkan jika pakai nomor dari data" data-original-wa="' + escapeHTML(item.wa) + '">' +
+                        '</div>' +
+                    '</div>' +
+                    '<button class="btn ' + (isSent ? 'btn-warning' : 'btn-success') + ' send-btn" ' +
+                        'data-id="' + uniqueId + '" ' +
+                        'data-name="' + escapeHTML(item.name) + '" ' +
+                        'data-wa="' + escapeHTML(item.wa) + '" ' +
+                        'data-link="' + escapeHTML(item.link) + '">' +
+                        '<span>' + (isSent ? '🔄' : '📨') + '</span>' +
+                        '<span>' + (isSent ? 'Kirim Ulang Invoice' : 'Kirim Invoice') + '</span>' +
+                    '</button>';
+
+                var manualInput = card.querySelector('.manual-wa-input');
+                manualInput.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        this.classList.add('has-value');
+                    } else {
+                        this.classList.remove('has-value');
+                    }
+                });
+
+                var sendBtn = card.querySelector('.send-btn');
+                sendBtn.addEventListener('click', function() {
+                    var clickedCard = this.closest('.data-card');
+                    handleSendInvoice(this, clickedCard);
+                });
+
+                dom.dataContainer.appendChild(card);
+            }
+        }
+
+        function showEmptyState(filter) {
+            var message = 'Tidak ada data yang sesuai dengan kriteria yang dipilih';
+            var icon = '📭';
+
+            if (filter === 'sent') {
+                message = 'Belum ada invoice yang terkirim';
+                icon = '📬';
+            } else if (filter === 'pending') {
+                message = 'Semua invoice sudah terkirim!';
+                icon = '🎉';
+            }
+
+            dom.dataContainer.innerHTML = 
+                '<div class="empty-state">' +
+                    '<div class="empty-icon">' + icon + '</div>' +
+                    '<div class="empty-title">Tidak Ada Data</div>' +
+                    '<div class="empty-text">' + message + '</div>' +
+                '</div>';
+        }
+
+        function handleSendInvoice(sendBtn, card) {
+            var uniqueId = sendBtn.getAttribute('data-id');
+            var name = sendBtn.getAttribute('data-name');
+            var originalWA = sendBtn.getAttribute('data-wa');
+            var link = sendBtn.getAttribute('data-link');
             
-            // Buka WhatsApp di tab baru
+            console.log('🚀 Sending invoice:', { uniqueId: uniqueId, name: name });
+            
+            var manualInput = card.querySelector('.manual-wa-input');
+            var manualWA = manualInput.value.trim();
+
+            var waNumber = manualWA || originalWA;
+            var useManual = !!manualWA;
+            
+            var message = WA_TEMPLATE
+                .replace('[nama]', name)
+                .replace('[link file]', link);
+            
+            var formattedWA;
+            
+            if (useManual) {
+                formattedWA = waNumber.toString().replace(/[^0-9]/g, '');
+                console.log('📱 Using manual WA:', formattedWA);
+            } else {
+                var cleanWA = waNumber.toString().replace(/[^0-9]/g, '');
+                formattedWA = cleanWA;
+                
+                if (formattedWA.indexOf('0') === 0) {
+                    formattedWA = '62' + formattedWA.substring(1);
+                } else if (formattedWA.indexOf('62') !== 0) {
+                    formattedWA = '62' + formattedWA;
+                }
+                console.log('📱 Using data WA:', formattedWA);
+            }
+
+            var waURL = 'https://wa.me/' + formattedWA + '?text=' + encodeURIComponent(message);
             window.open(waURL, '_blank');
 
-            // Update status kartu menjadi "Terkirim"
+            var timestamp = new Date().toISOString();
+            
+            // UPDATE LOCAL STATE IMMEDIATELY
+            sentInvoices[uniqueId] = {
+                name: name,
+                wa: originalWA,
+                timestamp: timestamp,
+                lastUpdated: new Date().toISOString()
+            };
+
+            console.log('🎨 Marking card as sent...');
+            
+            // UPDATE UI IMMEDIATELY
             markAsSent(uniqueId, card);
-
-            // Update stats
             updateStats();
+            updateFilterCounts();
+            updateActiveStates();
+            
+            // SAVE TO LOCALSTORAGE AS BACKUP
+            saveToLocalStorage();
 
-            // Show notification jika menggunakan nomor manual
-            if (manualWA) {
-                showToast(`📱 Invoice dikirim ke nomor manual: ${formattedWA}`);
+            if (useManual) {
+                showToast('📱 Invoice dikirim ke: ' + formattedWA);
             } else {
-                showToast(`✅ Invoice berhasil dikirim!`);
+                showToast('✅ Invoice berhasil dikirim!');
             }
+            
+            console.log('✅ UI updated successfully');
+            
+            // TRY TO UPDATE SERVER IN BACKGROUND (non-blocking)
+            console.log('💾 Attempting to save to server...');
+            
+            updateSentStatusToServer(uniqueId, name, originalWA, timestamp)
+                .then(function() {
+                    console.log('✅ Status also saved to server');
+                    showToast('☁️ Status tersinkron ke server');
+                })
+                .catch(function(error) {
+                    console.warn('⚠️ Server save failed (using local storage):', error);
+                    // UI sudah update, jadi tidak perlu error message
+                });
         }
 
-        // ============================================
-        // STATUS MANAGEMENT
-        // ============================================
-        function markAsSent(uniqueId, cardElement) {
-            // Simpan ke Set
-            sentInvoices.add(uniqueId);
-            saveSentStatus();
+        function loadSentStatusFromServer() {
+            return apiCall('getSentStatus', {})
+                .then(function(response) {
+                    sentInvoices = response.data || {};
+                    console.log('✅ Loaded sent status from server:', Object.keys(sentInvoices).length);
+                })
+                .catch(function(error) {
+                    console.error('Error loading sent status:', error);
+                    sentInvoices = {};
+                });
+        }
 
-            // Update tampilan kartu
-            cardElement.classList.add('sent');
+        function updateSentStatusToServer(uniqueId, name, wa, timestamp) {
+            return fetch(GAS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'updateSentStatus',
+                    uniqueId: uniqueId,
+                    name: name,
+                    wa: wa,
+                    timestamp: timestamp
+                })
+            })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(result) {
+                if (result.status !== 'success') {
+                    throw new Error(result.message || 'Failed to update status');
+                }
+                console.log('✅ Status updated to server:', uniqueId);
+                return result;
+            });
+        }
+
+        function markAsSent(uniqueId, cardElement) {
+            // Tambahkan class 'sent' untuk background hijau
+            if (!cardElement.classList.contains('sent')) {
+                cardElement.classList.add('sent');
+            }
             
-            // Update badge
-            const header = cardElement.querySelector('.card-header');
+            // Tambahkan badge "✓ Terkirim"
+            var header = cardElement.querySelector('.card-header');
             if (!header.querySelector('.card-badge')) {
-                const badge = document.createElement('span');
+                var badge = document.createElement('span');
                 badge.className = 'card-badge badge-sent';
                 badge.textContent = '✓ Terkirim';
                 header.appendChild(badge);
             }
 
-            // Update tombol
-            const btn = cardElement.querySelector('.send-btn');
+            // Update tombol jadi "Kirim Ulang" dengan warna kuning
+            var btn = cardElement.querySelector('.send-btn');
             btn.className = 'btn btn-warning send-btn';
             btn.innerHTML = '<span>🔄</span><span>Kirim Ulang Invoice</span>';
+            
+            console.log('✅ Card marked as sent:', uniqueId);
         }
 
         function generateUniqueId(item) {
-            // Generate ID unik berdasarkan nama + wa
-            return `${item.name}_${item.wa}`.replace(/[^a-zA-Z0-9]/g, '_');
+            return (item.name + '_' + item.wa).replace(/[^a-zA-Z0-9]/g, '_');
         }
 
-        function loadSentStatus() {
+        // LOCALSTORAGE BACKUP FUNCTIONS
+        function saveToLocalStorage() {
             try {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                return stored ? new Set(JSON.parse(stored)) : new Set();
+                var sentArray = [];
+                for (var key in sentInvoices) {
+                    if (sentInvoices.hasOwnProperty(key)) {
+                        sentArray.push({
+                            id: key,
+                            data: sentInvoices[key]
+                        });
+                    }
+                }
+                localStorage.setItem('invoice_sent_backup', JSON.stringify(sentArray));
+                console.log('💾 Saved to localStorage:', sentArray.length, 'items');
             } catch (error) {
-                console.error('Error loading sent status:', error);
-                return new Set();
+                console.error('LocalStorage save error:', error);
             }
         }
 
-        function saveSentStatus() {
+        function loadFromLocalStorage() {
             try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify([...sentInvoices]));
+                var stored = localStorage.getItem('invoice_sent_backup');
+                if (stored) {
+                    var sentArray = JSON.parse(stored);
+                    var loadedCount = 0;
+                    for (var i = 0; i < sentArray.length; i++) {
+                        var item = sentArray[i];
+                        // Hanya load jika belum ada di sentInvoices dari server
+                        if (!sentInvoices[item.id]) {
+                            sentInvoices[item.id] = item.data;
+                            loadedCount++;
+                        }
+                    }
+                    if (loadedCount > 0) {
+                        console.log('📦 Loaded from localStorage:', loadedCount, 'items');
+                    }
+                }
             } catch (error) {
-                console.error('Error saving sent status:', error);
+                console.error('LocalStorage load error:', error);
             }
         }
 
-        // ============================================
-        // STATISTICS
-        // ============================================
         function updateStats() {
-            const total = currentData.length;
-            const sent = currentData.filter(item => 
-                sentInvoices.has(generateUniqueId(item))
-            ).length;
-            const pending = total - sent;
+            var total = currentData.length;
+            var sent = currentData.filter(function(item) {
+                return sentInvoices[generateUniqueId(item)] !== undefined;
+            }).length;
+            var pending = total - sent;
 
             dom.statTotal.textContent = total;
             dom.statSent.textContent = sent;
             dom.statPending.textContent = pending;
         }
 
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        async function apiCall(action, params = {}) {
-            const url = new URL(GAS_URL);
+        function apiCall(action, params) {
+            var url = new URL(GAS_URL);
             url.searchParams.append('action', action);
-            for (const key in params) {
-                if (params[key]) {
+            
+            for (var key in params) {
+                if (params.hasOwnProperty(key) && params[key]) {
                     url.searchParams.append(key, params[key]);
                 }
             }
 
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Network error: ${response.statusText}`);
-            }
-
-            const json = await response.json();
-            if (json.status === 'error') {
-                throw new Error(json.message);
-            }
-            
-            return json;
+            return fetch(url)
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Network error: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(function(json) {
+                    if (json.status === 'error') {
+                        throw new Error(json.message);
+                    }
+                    return json;
+                });
         }
 
         function populateSelect(selectElement, options, defaultOptionText) {
-            selectElement.innerHTML = `<option value="">-- ${defaultOptionText} --</option>`;
-            options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                selectElement.appendChild(optionElement);
-            });
+            selectElement.innerHTML = '<option value="">-- ' + defaultOptionText + ' --</option>';
+            for (var i = 0; i < options.length; i++) {
+                var option = document.createElement('option');
+                option.value = options[i];
+                option.textContent = options[i];
+                selectElement.appendChild(option);
+            }
         }
 
         function resetColumnSelects() {
-            const defaultText = 'Pilih sheet dulu';
-            [dom.nameColSelect, dom.waColSelect, dom.linkColSelect].forEach(sel => {
-                sel.innerHTML = `<option>${defaultText}</option>`;
-                sel.disabled = true;
-            });
+            var defaultText = 'Pilih sheet dulu';
+            var selects = [dom.nameColSelect, dom.waColSelect, dom.linkColSelect];
+            for (var i = 0; i < selects.length; i++) {
+                selects[i].innerHTML = '<option>' + defaultText + '</option>';
+                selects[i].disabled = true;
+            }
             dom.loadDataBtn.disabled = true;
         }
 
@@ -1042,12 +1327,11 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             }
         }
 
-        function showMessage(message, isError = false) {
+        function showMessage(message, isError) {
             dom.statusMessage.textContent = message;
-            dom.statusMessage.className = `status-message ${isError ? 'error' : 'success'} show`;
+            dom.statusMessage.className = 'status-message ' + (isError ? 'error' : 'success') + ' show';
             
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
+            setTimeout(function() {
                 dom.statusMessage.classList.remove('show');
             }, 5000);
         }
@@ -1058,98 +1342,57 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
 
         function escapeHTML(str) {
             if (typeof str !== 'string') return str;
-            const div = document.createElement('div');
+            var div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         }
 
-        // ============================================
-        // TOAST NOTIFICATION
-        // ============================================
         function showToast(message) {
-            // Create toast element if doesn't exist
-            let toast = document.getElementById('toast');
+            var toast = document.getElementById('toast');
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'toast';
-                toast.style.cssText = `
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-                    color: white;
-                    padding: 16px 24px;
-                    border-radius: var(--radius-sm);
-                    box-shadow: var(--shadow-lg);
-                    font-weight: 600;
-                    z-index: 9999;
-                    opacity: 0;
-                    transform: translateY(20px);
-                    transition: var(--transition);
-                    max-width: 90%;
-                `;
+                toast.style.cssText = 
+                    'position: fixed;' +
+                    'bottom: 20px;' +
+                    'right: 20px;' +
+                    'background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);' +
+                    'color: white;' +
+                    'padding: 16px 24px;' +
+                    'border-radius: var(--radius-sm);' +
+                    'box-shadow: var(--shadow-lg);' +
+                    'font-weight: 600;' +
+                    'z-index: 9999;' +
+                    'opacity: 0;' +
+                    'transform: translateY(20px);' +
+                    'transition: var(--transition);' +
+                    'max-width: 90%;';
                 document.body.appendChild(toast);
             }
 
             toast.textContent = message;
             
-            // Show toast
-            setTimeout(() => {
+            setTimeout(function() {
                 toast.style.opacity = '1';
                 toast.style.transform = 'translateY(0)';
             }, 10);
 
-            // Hide toast after 3 seconds
-            setTimeout(() => {
+            setTimeout(function() {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(20px)';
             }, 3000);
         }
 
-        // ============================================
-        // KEYBOARD SHORTCUTS
-        // ============================================
-        document.addEventListener('keydown', (e) => {
-            // Ctrl/Cmd + R untuk refresh data
-            if ((e.ctrlKey || e.metaKey) && e.key === 'r' && currentData.length > 0) {
-                e.preventDefault();
-                handleLoadData();
-            }
-
-            // Ctrl/Cmd + K untuk clear sent status
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                if (confirm('Reset status pengiriman semua invoice?')) {
-                    sentInvoices.clear();
-                    saveSentStatus();
-                    if (currentData.length > 0) {
-                        renderDataCards(currentData);
-                        updateStats();
-                    }
-                    showToast('✅ Status pengiriman telah direset');
-                }
-            }
-        });
-
-        // ============================================
-        // ONLINE/OFFLINE DETECTION
-        // ============================================
-        window.addEventListener('online', () => {
+        window.addEventListener('online', function() {
             showToast('🌐 Koneksi internet tersambung');
         });
 
-        window.addEventListener('offline', () => {
+        window.addEventListener('offline', function() {
             showToast('⚠️ Koneksi internet terputus');
         });
 
-        // ============================================
-        // CONSOLE BRANDING
-        // ============================================
         console.log('%c📨 Dashboard Invoice Pro', 'color: #2563eb; font-size: 24px; font-weight: bold;');
-        console.log('%cVersion 2.0 - Mobile Optimized', 'color: #10b981; font-size: 14px;');
-        console.log('%c⌨️ Keyboard Shortcuts:', 'color: #f59e0b; font-size: 12px; font-weight: bold;');
-        console.log('%c  Ctrl/Cmd + R: Refresh Data', 'color: #6b7280; font-size: 11px;');
-        console.log('%c  Ctrl/Cmd + K: Reset Sent Status', 'color: #6b7280; font-size: 11px;');
+        console.log('%cVersion 3.0 - Fixed & Compatible', 'color: #10b981; font-size: 14px;');
     </script>
 </body>
 </html>
