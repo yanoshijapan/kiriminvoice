@@ -2,321 +2,688 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Kirim Invoice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Dashboard Kirim Invoice Jastip</title>
     <style>
-        /* --- Reset & Global --- */
+        /* --- Modern CSS Variables --- */
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --bg-color: #eef2f5;
-            --card-bg: #ffffff;
-            --border-color: #dee2e6;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --border-radius: 8px;
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--dark-color);
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        /* --- Layout & Struktur --- */
+        /* --- Container --- */
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 16px;
         }
 
-        header {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
+        /* --- Header --- */
+        .header {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
             text-align: center;
         }
 
-        header h1 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 2rem;
+        .header h1 {
+            color: var(--primary);
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        main {
-            display: grid;
-            gap: 25px;
+        .header p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
         }
 
-        /* --- Panel Kontrol --- */
-        .control-panel {
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--border-radius);
+        /* --- Control Panel --- */
+        .panel {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
             box-shadow: var(--shadow);
         }
 
-        .control-panel h2 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            color: var(--secondary-color);
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--gray-100);
         }
 
+        .panel-title-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .panel-title h2 {
+            color: var(--gray-800);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* --- Form Styles --- */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            align-items: end;
+            gap: 16px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
-        .form-group label {
+        .form-label {
             font-weight: 600;
-            margin-bottom: 8px;
             font-size: 0.9rem;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        select, button {
+        .form-label-required {
+            color: var(--danger);
+            font-size: 1.2rem;
+        }
+
+        select, input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 16px;
             font-size: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            background-color: #fff;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            color: var(--gray-800);
+            transition: var(--transition);
+            -webkit-appearance: none;
+            appearance: none;
         }
 
-        select:focus, button:focus {
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+
+        select:focus, input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        button {
+        input::placeholder {
+            color: var(--gray-400);
+        }
+
+        /* --- Button Styles --- */
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
             color: white;
-            border-color: var(--primary-color);
+            box-shadow: var(--shadow);
         }
-        .btn-primary:hover {
-            background-color: #0069d9;
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn-success {
-            background-color: var(--success-color);
+            background: var(--success);
             color: white;
-            border-color: var(--success-color);
-        }
-        .btn-success:hover {
-            background-color: #218838;
-        }
-        
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: white;
-            border-color: var(--secondary-color);
         }
 
-        /* --- Loader & Status --- */
-        .loader-container {
-            display: none; /* Sembunyi by default */
-            text-align: center;
-            padding: 40px 0;
+        .btn-success:hover:not(:disabled) {
+            background: var(--success-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
-        .loader {
-            border: 6px solid var(--light-color);
-            border-top: 6px solid var(--primary-color);
-            border-radius: 50%;
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* --- Loader --- */
+        .loader-container {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loader-container.show {
+            display: block;
+        }
+
+        .spinner {
             width: 50px;
             height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .status-message {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-        .status-message.error {
-            color: #dc3545;
+            border: 4px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
         }
 
-        /* --- Kontainer Data (Card View) --- */
-        #data-container {
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        /* --- Status Messages --- */
+        .status-message {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+            font-weight: 600;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.error {
+            background: #fee;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .status-message.success {
+            background: #eff6ff;
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Data Cards --- */
+        .data-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        /* Mobile: 2 kolom di layar kecil */
+        @media (max-width: 767px) {
+            .data-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        /* Mobile sangat kecil: 1 kolom */
+        @media (max-width: 400px) {
+            .data-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
         }
 
         .data-card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            background: var(--white);
+            border-radius: var(--radius);
             padding: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s; /* Tambahkan background-color */
+            gap: 16px;
+            border: 2px solid transparent;
         }
-        .data-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* CSS BARU UNTUK KARTU YANG SUDAH TERKIRIM */
-        .data-card.sent {
-            background-color: #e9f7ef; /* Hijau muda */
-            border: 1px solid var(--success-color);
-        }
-        .data-card.sent:hover {
-            transform: none; /* Hilangkan efek hover jika sudah terkirim */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Kembalikan shadow standar */
-        }
-        /* AKHIR CSS BARU */
 
-        .data-card h3 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            font-size: 1.3rem;
+        .data-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .data-card.sent {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-color: var(--success);
+        }
+
+        .data-card.sent:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .card-title {
+            color: var(--gray-800);
+            font-size: 1.2rem;
+            font-weight: 700;
+            word-break: break-word;
+            flex: 1;
+        }
+
+        .card-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .badge-sent {
+            background: var(--success);
+            color: white;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .card-info {
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-            word-wrap: break-word;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .card-info strong {
-            color: var(--secondary-color);
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
         }
-        .card-info p {
-            margin-bottom: 8px;
+
+        .info-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+            min-width: 24px;
         }
-        .card-info a {
-            color: var(--primary-color);
+
+        .info-label {
+            font-weight: 600;
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            min-width: 80px;
+        }
+
+        .info-value {
+            color: var(--gray-800);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .info-link {
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 600;
         }
-        .card-info a:hover {
+
+        .info-link:hover {
             text-decoration: underline;
         }
 
-        .data-card .btn-success {
+        /* Manual WA Input */
+        .manual-wa-input {
             width: 100%;
-            margin-top: 10px;
+            padding: 12px 16px;
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            transition: var(--transition);
         }
 
-        /* --- Footer --- */
-        footer {
+        .manual-wa-input:focus {
+            border-color: var(--warning);
+            border-style: solid;
+            background: #fffbeb;
+        }
+
+        .manual-wa-input.has-value {
+            border-color: var(--warning);
+            border-style: solid;
+            background: #fffbeb;
+        }
+
+        /* --- Stats Bar --- */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
             text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            color: var(--secondary-color);
-            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+
+        /* --- Empty State --- */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-600);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 0.95rem;
+        }
+
+        /* --- Responsive --- */
+        @media (min-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            .form-grid.cols-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-grid.cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                padding: 20px 16px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .data-card {
+                padding: 14px;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .info-row {
+                padding: 8px;
+                gap: 8px;
+            }
+
+            .info-icon {
+                font-size: 1rem;
+            }
+
+            .info-label {
+                min-width: 60px;
+                font-size: 0.75rem;
+            }
+
+            .info-value {
+                font-size: 0.85rem;
+            }
+
+            .btn {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+
+            .manual-wa-input {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* --- Scroll Behavior --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* --- Accessibility --- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <header>
-            <h1>Dashboard Kirim Invoice</h1>
+        <!-- Header -->
+        <header class="header">
+            <h1>📨 Dashboard Invoice Jastip</h1>
+            <p>Sistem pengiriman invoice otomatis via WhatsApp</p>
         </header>
 
-        <main>
-            <section class="control-panel">
-                <h2>1. Pilih Sumber Data</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="sheet-select">Pilih Sheet</label>
-                        <select id="sheet-select" disabled>
-                            <option>Memuat sheet...</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-
-            <section class="control-panel">
-                <h2>2. Tentukan Kolom</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="name-col-select">Kolom Nama</label>
-                        <select id="name-col-select" disabled>
-                            <option>Pilih sheet dulu</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="wa-col-select">Kolom WhatsApp</label>
-                        <select id="wa-col-select" disabled>
-                            <option>Pilih sheet dulu</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="link-col-select">Kolom Link File</label>
-                        <select id="link-col-select" disabled>
-                            <option>Pilih sheet dulu</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="control-panel">
-                <h2>3. Tampilkan Data</h2>
-                <div class="form-grid" style="grid-template-columns: 1fr;">
-                    <button id="load-data-btn" class="btn-primary" disabled>Tampilkan Data</button>
-                </div>
-            </section>
-
-            <div class="loader-container" id="loader">
-                <div class="loader"></div>
-                <p>Memuat data...</p>
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="stats-bar" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Total Data</div>
             </div>
-            <div class="status-message" id="status-message"></div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-sent" style="color: var(--success);">0</div>
+                <div class="stat-label">Terkirim</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-pending" style="color: var(--warning);">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
 
-            <section id="data-container"></section>
-        </main>
+        <!-- Panel 1: Select Sheet -->
+        <section class="panel">
+            <div class="panel-title">
+                <span class="panel-title-icon">1</span>
+                <h2>Pilih Sumber Data</h2>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="sheet-select">
+                        <span>📊 Sheet</span>
+                        <span class="form-label-required">*</span>
+                    </label>
+                    <select id="sheet-select" disabled>
+                        <option>⏳ Memuat sheet...</option>
+                    </select>
+                </div>
+            </div>
+        </section>
 
-        <footer>
-            <p>&copy; 2025 - Dibuat untuk Dashboard Kustom</p>
-        </footer>
+        <!-- Panel 2: Select Columns -->
+        <section class="panel">
+            <div class="panel-title">
+                <span class="panel-title-icon">2</span>
+                <h2>Tentukan Kolom Data</h2>
+            </div>
+            <div class="form-grid cols-3">
+                <div class="form-group">
+                    <label class="form-label" for="name-col-select">👤 Kolom Nama</label>
+                    <select id="name-col-select" disabled>
+                        <option>Pilih sheet dulu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="wa-col-select">📱 Kolom WhatsApp</label>
+                    <select id="wa-col-select" disabled>
+                        <option>Pilih sheet dulu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="link-col-select">🔗 Kolom Link File</label>
+                    <select id="link-col-select" disabled>
+                        <option>Pilih sheet dulu</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 3: Load Data -->
+        <section class="panel">
+            <div class="panel-title">
+                <span class="panel-title-icon">3</span>
+                <h2>Tampilkan Data Invoice</h2>
+            </div>
+            <button id="load-data-btn" class="btn btn-primary" disabled>
+                <span>🚀</span>
+                <span>Tampilkan Data</span>
+            </button>
+        </section>
+
+        <!-- Loader -->
+        <div class="loader-container" id="loader">
+            <div class="spinner"></div>
+            <p class="loader-text">Memuat data...</p>
+        </div>
+
+        <!-- Status Message -->
+        <div class="status-message" id="status-message"></div>
+
+        <!-- Data Container -->
+        <div class="data-grid" id="data-container"></div>
     </div>
 
     <script>
-        // --- KONFIGURASI ---
-        // !!! PENTING: Ganti dengan URL Web App Anda dari Google Apps Script
+        // ============================================
+        // KONFIGURASI
+        // ============================================
         const GAS_URL = "https://script.google.com/macros/s/AKfycbxNXdYfuTTT_qthMUI0mJfFSPTTeyg8y9bsbrO03bak4xzQ2UBL8sCJrkqhfuDMwEpE/exec";
 
-        // --- Template Pesan WhatsApp ---
         const WA_TEMPLATE = `Halo kak [nama], ini invoice dan alamat pengiriman. Mohon dicek kembali ya, apakah sudah sesuai dengan dokumen yang diunggah? Berikut invoicenya:
 [link file]
 Rencana pembayaran pakai Yen atau Rupiah, kak?`;
 
-        // --- Selektor DOM ---
+        // Local Storage Key untuk menyimpan status pengiriman
+        const STORAGE_KEY = 'invoice_sent_status';
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
         const dom = {
             sheetSelect: document.getElementById('sheet-select'),
             nameColSelect: document.getElementById('name-col-select'),
@@ -326,34 +693,43 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             loader: document.getElementById('loader'),
             dataContainer: document.getElementById('data-container'),
             statusMessage: document.getElementById('status-message'),
+            statsBar: document.getElementById('stats-bar'),
+            statTotal: document.getElementById('stat-total'),
+            statSent: document.getElementById('stat-sent'),
+            statPending: document.getElementById('stat-pending'),
         };
 
-        // --- Event Listeners ---
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        let currentData = [];
+        let sentInvoices = loadSentStatus();
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
         document.addEventListener('DOMContentLoaded', initApp);
         dom.sheetSelect.addEventListener('change', handleSheetSelect);
         dom.loadDataBtn.addEventListener('click', handleLoadData);
 
-        /**
-         * Inisialisasi aplikasi saat halaman dimuat
-         */
         async function initApp() {
             showLoader(true);
-            showMessage('');
+            hideMessage();
             
             try {
                 const response = await apiCall('getSheets');
                 populateSelect(dom.sheetSelect, response.data, 'Pilih Sheet');
                 dom.sheetSelect.disabled = false;
             } catch (error) {
-                showMessage(`Gagal memuat sheet: ${error.message}`, true);
+                showMessage(`❌ Gagal memuat sheet: ${error.message}`, true);
             } finally {
                 showLoader(false);
             }
         }
 
-        /**
-         * Menangani saat sheet dipilih
-         */
+        // ============================================
+        // EVENT HANDLERS
+        // ============================================
         async function handleSheetSelect() {
             const sheetName = dom.sheetSelect.value;
             if (!sheetName) {
@@ -362,32 +738,27 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             }
 
             showLoader(true);
-            showMessage('');
+            hideMessage();
             dom.loadDataBtn.disabled = true;
 
             try {
                 const response = await apiCall('getHeaders', { sheetName });
                 const headers = response.data;
                 
-                // Isi ketiga dropdown kolom
                 populateSelect(dom.nameColSelect, headers, 'Pilih Kolom Nama');
                 populateSelect(dom.waColSelect, headers, 'Pilih Kolom WA');
                 populateSelect(dom.linkColSelect, headers, 'Pilih Kolom Link');
 
-                // Aktifkan dropdown dan tombol
                 [dom.nameColSelect, dom.waColSelect, dom.linkColSelect, dom.loadDataBtn].forEach(el => el.disabled = false);
 
             } catch (error) {
-                showMessage(`Gagal memuat header kolom: ${error.message}`, true);
+                showMessage(`❌ Gagal memuat header: ${error.message}`, true);
                 resetColumnSelects();
             } finally {
                 showLoader(false);
             }
         }
 
-        /**
-         * Menangani saat tombol "Tampilkan Data" diklik
-         */
         async function handleLoadData() {
             const params = {
                 sheetName: dom.sheetSelect.value,
@@ -396,123 +767,244 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
                 linkCol: dom.linkColSelect.value,
             };
 
-            // Validasi input
             if (!params.sheetName) {
-                showMessage('Harap pilih Sheet terlebih dahulu.', true);
+                showMessage('⚠️ Harap pilih Sheet terlebih dahulu.', true);
                 return;
             }
 
             showLoader(true);
-            showMessage('');
-            dom.dataContainer.innerHTML = ''; // Kosongkan hasil sebelumnya
+            hideMessage();
+            dom.dataContainer.innerHTML = '';
+            dom.statsBar.style.display = 'none';
 
             try {
                 const response = await apiCall('getData', params);
-                const data = response.data;
+                currentData = response.data;
 
-                if (data.length === 0) {
-                    showMessage('Tidak ada data yang ditemukan dengan kriteria tersebut.', false);
+                if (currentData.length === 0) {
+                    showEmptyState();
                 } else {
-                    renderDataCards(data);
+                    renderDataCards(currentData);
+                    updateStats();
+                    dom.statsBar.style.display = 'grid';
+                    showMessage(`✅ Berhasil memuat ${currentData.length} data invoice!`, false);
                 }
             } catch (error) {
-                showMessage(`Gagal mengambil data: ${error.message}`, true);
+                showMessage(`❌ Gagal mengambil data: ${error.message}`, true);
             } finally {
                 showLoader(false);
             }
         }
 
-        /**
-         * Merender data sebagai kartu-kartu
-         */
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
         function renderDataCards(data) {
-            data.forEach(item => {
+            dom.dataContainer.innerHTML = '';
+
+            data.forEach((item, index) => {
+                const uniqueId = generateUniqueId(item);
+                const isSent = sentInvoices.has(uniqueId);
+
                 const card = document.createElement('div');
-                card.className = 'data-card';
+                card.className = `data-card ${isSent ? 'sent' : ''}`;
+                card.dataset.id = uniqueId;
+
                 card.innerHTML = `
-                    <div class="card-content">
-                        <h3>${escapeHTML(item.name)}</h3>
-                        <div class="card-info">
-                            <p><strong>WhatsApp:</strong> ${escapeHTML(item.wa)}</p>
-                            <p><strong>Link File:</strong> <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer">Lihat File</a></p>
+                    <div class="card-header">
+                        <h3 class="card-title">${escapeHTML(item.name)}</h3>
+                        ${isSent ? '<span class="card-badge badge-sent">✓ Terkirim</span>' : ''}
+                    </div>
+
+                    <div class="card-info">
+                        <div class="info-row">
+                            <span class="info-icon">📱</span>
+                            <span class="info-label">WhatsApp:</span>
+                            <span class="info-value">${escapeHTML(item.wa)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">🔗</span>
+                            <span class="info-label">Link File:</span>
+                            <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer" class="info-link">
+                                Lihat Invoice →
+                            </a>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">✏️</span>
+                            <span class="info-label">WA Manual:</span>
+                            <input 
+                                type="tel" 
+                                class="manual-wa-input" 
+                                placeholder="Kosongkan jika pakai nomor dari data"
+                                data-index="${index}"
+                            >
                         </div>
                     </div>
-                    <button class="btn-success send-wa-btn">Kirim Invoice</button>
-                `;
-                
-                // Tambahkan data ke tombol untuk digunakan saat diklik
-                const sendButton = card.querySelector('.send-wa-btn');
-                sendButton.dataset.name = item.name;
-                sendButton.dataset.wa = item.wa;
-                sendButton.dataset.link = item.link;
 
-                // Tambahkan event listener ke tombol
-                sendButton.addEventListener('click', handleSendWhatsApp);
-                
+                    <button 
+                        class="btn ${isSent ? 'btn-warning' : 'btn-success'} send-btn"
+                        data-index="${index}"
+                        data-id="${uniqueId}"
+                    >
+                        <span>${isSent ? '🔄' : '📨'}</span>
+                        <span>${isSent ? 'Kirim Ulang Invoice' : 'Kirim Invoice'}</span>
+                    </button>
+                `;
+
+                // Event listener untuk input manual WA
+                const manualInput = card.querySelector('.manual-wa-input');
+                manualInput.addEventListener('input', (e) => {
+                    if (e.target.value.trim()) {
+                        e.target.classList.add('has-value');
+                    } else {
+                        e.target.classList.remove('has-value');
+                    }
+                });
+
+                // Event listener untuk tombol kirim
+                const sendBtn = card.querySelector('.send-btn');
+                sendBtn.addEventListener('click', () => handleSendInvoice(index, uniqueId));
+
                 dom.dataContainer.appendChild(card);
             });
         }
 
-        /**
-         * Menangani klik tombol "Kirim Invoice"
-         */
-        function handleSendWhatsApp(event) {
-            const sendButton = event.target;
-            // Dapatkan elemen card induk
-            const cardElement = sendButton.closest('.data-card'); 
+        function showEmptyState() {
+            dom.dataContainer.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-title">Tidak Ada Data</div>
+                    <div class="empty-text">Tidak ada data yang sesuai dengan kriteria yang dipilih</div>
+                </div>
+            `;
+        }
 
-            const { name, wa, link } = sendButton.dataset;
+        // ============================================
+        // SEND INVOICE HANDLER
+        // ============================================
+        function handleSendInvoice(index, uniqueId) {
+            const item = currentData[index];
+            const card = document.querySelector(`[data-id="${uniqueId}"]`);
+            const manualInput = card.querySelector('.manual-wa-input');
+            const manualWA = manualInput.value.trim();
+
+            // Tentukan nomor WA yang akan digunakan
+            let waNumber = manualWA || item.wa;
             
             // Format pesan
             const message = WA_TEMPLATE
-                .replace('[nama]', name)
-                .replace('[link file]', link);
+                .replace('[nama]', item.name)
+                .replace('[link file]', item.link);
             
-            // Bersihkan nomor WA
-            const cleanWANumber = wa.toString().replace(/[^0-9]/g, '');
-            let formattedWA = cleanWANumber;
+            // Bersihkan dan format nomor WA
+            const cleanWA = waNumber.toString().replace(/[^0-9]/g, '');
+            let formattedWA = cleanWA;
 
-            // Format nomor ke standar internasional (62)
             if (formattedWA.startsWith('0')) {
                 formattedWA = '62' + formattedWA.substring(1);
             } else if (!formattedWA.startsWith('62')) {
                 formattedWA = '62' + formattedWA;
             }
 
-            // Buat URL dan buka di tab baru
+            // Buat URL WhatsApp
             const waURL = `https://wa.me/${formattedWA}?text=${encodeURIComponent(message)}`;
+            
+            // Buka WhatsApp di tab baru
             window.open(waURL, '_blank');
 
-            // --- BAGIAN BARU: UBAH TAMPILAN CARD ---
-            if (cardElement) {
-                // 1. Tambahkan class 'sent' untuk mengubah warna latar belakang
-                cardElement.classList.add('sent'); 
-                
-                // 2. Opsional: Nonaktifkan tombol dan ubah teks/warna tombol agar tidak dikirim ganda
-                sendButton.textContent = 'Invoice Terkirim!';
-                sendButton.disabled = true;
-                sendButton.classList.remove('btn-success');
-                sendButton.classList.add('btn-secondary'); // Menggunakan warna abu-abu
+            // Update status kartu menjadi "Terkirim"
+            markAsSent(uniqueId, card);
+
+            // Update stats
+            updateStats();
+
+            // Show notification jika menggunakan nomor manual
+            if (manualWA) {
+                showToast(`📱 Invoice dikirim ke nomor manual: ${formattedWA}`);
+            } else {
+                showToast(`✅ Invoice berhasil dikirim!`);
             }
-            // --- AKHIR BAGIAN BARU ---
         }
 
+        // ============================================
+        // STATUS MANAGEMENT
+        // ============================================
+        function markAsSent(uniqueId, cardElement) {
+            // Simpan ke Set
+            sentInvoices.add(uniqueId);
+            saveSentStatus();
 
-        // --- Fungsi Utilitas ---
+            // Update tampilan kartu
+            cardElement.classList.add('sent');
+            
+            // Update badge
+            const header = cardElement.querySelector('.card-header');
+            if (!header.querySelector('.card-badge')) {
+                const badge = document.createElement('span');
+                badge.className = 'card-badge badge-sent';
+                badge.textContent = '✓ Terkirim';
+                header.appendChild(badge);
+            }
 
-        /**
-         * Fungsi pembungkus (wrapper) untuk API call ke Google Apps Script
-         */
+            // Update tombol
+            const btn = cardElement.querySelector('.send-btn');
+            btn.className = 'btn btn-warning send-btn';
+            btn.innerHTML = '<span>🔄</span><span>Kirim Ulang Invoice</span>';
+        }
+
+        function generateUniqueId(item) {
+            // Generate ID unik berdasarkan nama + wa
+            return `${item.name}_${item.wa}`.replace(/[^a-zA-Z0-9]/g, '_');
+        }
+
+        function loadSentStatus() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                return stored ? new Set(JSON.parse(stored)) : new Set();
+            } catch (error) {
+                console.error('Error loading sent status:', error);
+                return new Set();
+            }
+        }
+
+        function saveSentStatus() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify([...sentInvoices]));
+            } catch (error) {
+                console.error('Error saving sent status:', error);
+            }
+        }
+
+        // ============================================
+        // STATISTICS
+        // ============================================
+        function updateStats() {
+            const total = currentData.length;
+            const sent = currentData.filter(item => 
+                sentInvoices.has(generateUniqueId(item))
+            ).length;
+            const pending = total - sent;
+
+            dom.statTotal.textContent = total;
+            dom.statSent.textContent = sent;
+            dom.statPending.textContent = pending;
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
         async function apiCall(action, params = {}) {
             const url = new URL(GAS_URL);
             url.searchParams.append('action', action);
             for (const key in params) {
-                url.searchParams.append(key, params[key]);
+                if (params[key]) {
+                    url.searchParams.append(key, params[key]);
+                }
             }
 
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`Jaringan error: ${response.statusText}`);
+                throw new Error(`Network error: ${response.statusText}`);
             }
 
             const json = await response.json();
@@ -523,9 +1015,6 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             return json;
         }
 
-        /**
-         * Mengisi elemen <select> dengan opsi
-         */
         function populateSelect(selectElement, options, defaultOptionText) {
             selectElement.innerHTML = `<option value="">-- ${defaultOptionText} --</option>`;
             options.forEach(option => {
@@ -536,48 +1025,131 @@ Rencana pembayaran pakai Yen atau Rupiah, kak?`;
             });
         }
 
-        /**
-         * Mereset dropdown kolom
-         */
         function resetColumnSelects() {
             const defaultText = 'Pilih sheet dulu';
             [dom.nameColSelect, dom.waColSelect, dom.linkColSelect].forEach(sel => {
                 sel.innerHTML = `<option>${defaultText}</option>`;
                 sel.disabled = true;
             });
+            dom.loadDataBtn.disabled = true;
         }
 
-        /**
-         * Menampilkan atau menyembunyikan loader
-         */
         function showLoader(show) {
-            dom.loader.style.display = show ? 'block' : 'none';
+            if (show) {
+                dom.loader.classList.add('show');
+            } else {
+                dom.loader.classList.remove('show');
+            }
         }
 
-        /**
-         * Menampilkan pesan status atau error
-         */
         function showMessage(message, isError = false) {
             dom.statusMessage.textContent = message;
-            dom.statusMessage.className = isError ? 'status-message error' : 'status-message';
+            dom.statusMessage.className = `status-message ${isError ? 'error' : 'success'} show`;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                dom.statusMessage.classList.remove('show');
+            }, 5000);
         }
 
-        /**
-         * Membersihkan HTML untuk mencegah XSS
-         */
+        function hideMessage() {
+            dom.statusMessage.classList.remove('show');
+        }
+
         function escapeHTML(str) {
             if (typeof str !== 'string') return str;
-            return str.replace(/[&<>"']/g, function(m) {
-                return {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#39;'
-                }[m];
-            });
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
         }
 
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+        function showToast(message) {
+            // Create toast element if doesn't exist
+            let toast = document.getElementById('toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+                    color: white;
+                    padding: 16px 24px;
+                    border-radius: var(--radius-sm);
+                    box-shadow: var(--shadow-lg);
+                    font-weight: 600;
+                    z-index: 9999;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: var(--transition);
+                    max-width: 90%;
+                `;
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            
+            // Show toast
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 10);
+
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+            }, 3000);
+        }
+
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + R untuk refresh data
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r' && currentData.length > 0) {
+                e.preventDefault();
+                handleLoadData();
+            }
+
+            // Ctrl/Cmd + K untuk clear sent status
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                if (confirm('Reset status pengiriman semua invoice?')) {
+                    sentInvoices.clear();
+                    saveSentStatus();
+                    if (currentData.length > 0) {
+                        renderDataCards(currentData);
+                        updateStats();
+                    }
+                    showToast('✅ Status pengiriman telah direset');
+                }
+            }
+        });
+
+        // ============================================
+        // ONLINE/OFFLINE DETECTION
+        // ============================================
+        window.addEventListener('online', () => {
+            showToast('🌐 Koneksi internet tersambung');
+        });
+
+        window.addEventListener('offline', () => {
+            showToast('⚠️ Koneksi internet terputus');
+        });
+
+        // ============================================
+        // CONSOLE BRANDING
+        // ============================================
+        console.log('%c📨 Dashboard Invoice Pro', 'color: #2563eb; font-size: 24px; font-weight: bold;');
+        console.log('%cVersion 2.0 - Mobile Optimized', 'color: #10b981; font-size: 14px;');
+        console.log('%c⌨️ Keyboard Shortcuts:', 'color: #f59e0b; font-size: 12px; font-weight: bold;');
+        console.log('%c  Ctrl/Cmd + R: Refresh Data', 'color: #6b7280; font-size: 11px;');
+        console.log('%c  Ctrl/Cmd + K: Reset Sent Status', 'color: #6b7280; font-size: 11px;');
     </script>
 </body>
 </html>
